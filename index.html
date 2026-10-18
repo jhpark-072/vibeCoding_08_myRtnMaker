@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🔥 스마트 운동 계획 & 인터벌 타이머</title>
+  <!-- Google Fonts: Oswald (디지털 타이머용 볼드 폰트) & Pretendard/Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-idle">
+
+  <div class="app-container">
+    <!-- 1. 최상단 네비게이션 헤더 -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <h1 class="logo-title">PULSE TIMER</h1>
+      </div>
+      <div class="header-actions">
+        <button id="btnSoundToggle" class="icon-btn" title="사운드 토글" aria-label="사운드 토글">
+          <span class="btn-icon">🔊</span>
+          <span class="btn-text">소리 ON</span>
+        </button>
+        <button id="btnFullscreen" class="icon-btn" title="전체화면" aria-label="전체화면">
+          <span class="btn-icon">⛶</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. 메인 디스플레이 영역 (바닥 거치 시 원거리 시인성 극대화) -->
+    <main class="main-display-section" id="displayArea">
+      <!-- 상태 뱃지 (READY / WORK / REST / PAUSED) -->
+      <div class="status-badge-container">
+        <span id="statusBadge" class="status-badge">대기 중 (READY)</span>
+        <span id="wakeLockBadge" class="wakelock-badge hidden">화면 켜짐 유지</span>
+      </div>
+
+      <!-- 현재 운동 이름 -->
+      <h2 id="currentStageName" class="current-stage-name">루틴을 시작하세요</h2>
+
+      <!-- 라운드 인디케이터 및 프로그레스 바 -->
+      <div class="round-indicator-container">
+        <span class="round-label">ROUND</span>
+        <span id="currentRoundDisplay" class="round-numbers">0 / 0</span>
+        <div class="progress-bar-bg">
+          <div id="roundProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- 초대형 타이머 디스플레이 -->
+      <div class="timer-display-wrapper">
+        <div id="mainTimerDisplay" class="main-timer">00:00</div>
+        <div id="timerSubLabel" class="timer-sub-label">남은 시간</div>
+      </div>
+
+      <!-- 다음 운동 알림 (Next Preview) -->
+      <div class="next-preview-card" id="nextPreviewContainer">
+        <span class="next-tag">NEXT</span>
+        <span id="nextStageText" class="next-stage-text">다음 운동: -</span>
+      </div>
+    </main>
+
+    <!-- 3. 컨트롤 패널 -->
+    <section class="control-panel">
+      <button id="btnPrevStage" class="ctrl-btn ctrl-btn-sub" title="이전 단계" aria-label="이전 단계">
+        <span class="icon">⏮</span>
+        <span class="btn-label">이전</span>
+      </button>
+
+      <button id="btnPlayPause" class="ctrl-btn ctrl-btn-main" title="시작/일시정지" aria-label="시작/일시정지">
+        <span id="playPauseIcon" class="icon">▶</span>
+        <span id="playPauseText" class="btn-label">시작</span>
+      </button>
+
+      <button id="btnReset" class="ctrl-btn ctrl-btn-sub" title="초기화" aria-label="초기화">
+        <span class="icon">🔄</span>
+        <span class="btn-label">리셋</span>
+      </button>
+
+      <button id="btnNextStage" class="ctrl-btn ctrl-btn-sub ctrl-btn-next" title="다음 단계로 즉시 이동" aria-label="다음 단계">
+        <span class="icon">⏭</span>
+        <span class="btn-label">다음 단계</span>
+      </button>
+    </section>
+
+    <!-- 4. 루틴 관리 및 스테이지 빌더 섹션 -->
+    <section class="routine-builder-section">
+      <div class="section-header">
+        <h3 class="section-title">⚙️ 루틴 설정 & 스테이지 구성</h3>
+        <button id="btnToggleBuilder" class="toggle-view-btn" aria-expanded="true">
+          <span id="toggleBuilderText">접기</span> ▲
+        </button>
+      </div>
+
+      <div id="builderContent" class="builder-content">
+        <!-- 4.1 루틴 프리셋 제어 바 -->
+        <div class="preset-control-bar">
+          <div class="preset-select-wrapper">
+            <label for="routineSelect" class="sr-only">저장된 루틴 선택</label>
+            <select id="routineSelect" class="styled-select">
+              <!-- JS 동적 생성 -->
+            </select>
+          </div>
+          <div class="preset-btn-group">
+            <button id="btnSaveRoutine" class="preset-btn btn-save" title="현재 루틴을 저장">💾 저장</button>
+            <button id="btnDeleteRoutine" class="preset-btn btn-del" title="선택된 루틴 삭제">🗑 삭제</button>
+          </div>
+        </div>
+
+        <!-- 4.2 전역 대기 시간 설정 -->
+        <div class="global-setting-bar">
+          <div class="setting-item">
+            <label for="inputReadyTime">⏳ 시작 전 대기 시간:</label>
+            <div class="input-with-unit">
+              <input type="number" id="inputReadyTime" min="0" max="60" value="5">
+              <span class="unit">초</span>
+            </div>
+          </div>
+          <div class="routine-summary-badge" id="routineTotalTime">
+            총 예상 소요 시간: <span>00:00</span>
+          </div>
+        </div>
+
+        <!-- 4.3 동적 스테이지 카드 목록 -->
+        <div id="stageListContainer" class="stage-list-container">
+          <!-- JS 동적 생성 -->
+        </div>
+
+        <!-- 4.4 스테이지 추가 버튼 -->
+        <div class="add-stage-wrapper">
+          <button id="btnAddStage" class="btn-add-stage">
+            <span class="plus-icon">➕</span> 새로운 운동 단계 추가
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 루틴 이름 저장 모달 -->
+  <div id="saveModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h3 class="modal-title">루틴 저장하기</h3>
+      <p class="modal-desc">현재 구성된 운동 루틴의 이름을 입력해 주세요.</p>
+      <input type="text" id="inputRoutineName" class="modal-input" placeholder="예: 모닝 15분 하체 타바타" maxlength="30">
+      <div class="modal-actions">
+        <button id="btnModalCancel" class="btn-modal btn-modal-cancel">취소</button>
+        <button id="btnModalConfirm" class="btn-modal btn-modal-confirm">저장 완료</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 전체 완료 오버레이 모달 -->
+  <div id="completedOverlay" class="modal-overlay hidden">
+    <div class="modal-content completed-content">
+      <div class="trophy-icon">🏆</div>
+      <h2 class="completed-title">WORKOUT COMPLETED!</h2>
+      <p class="completed-desc">모든 운동 루틴을 완벽하게 완주하셨습니다!</p>
+      <div id="completedStats" class="completed-stats">
+        <!-- 완료 통계 동적 삽입 -->
+      </div>
+      <button id="btnCompletedClose" class="btn-modal btn-modal-confirm">확인 및 초기화</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

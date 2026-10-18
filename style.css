@@ -1,0 +1,972 @@
+/* ==========================================================================
+   🔥 PULSE TIMER: Sporty Dark & Neon Responsive Stylesheet
+   ========================================================================== */
+
+:root {
+  /* 테마 컬러 팔레트 */
+  --bg-primary: #0a0e17;
+  --bg-secondary: #121826;
+  --bg-card: #182234;
+  --bg-card-hover: #1f2c42;
+  --border-color: #27354f;
+
+  /* 스포티 네온 액센트 */
+  --neon-green: #00ff88;
+  --neon-green-glow: rgba(0, 255, 136, 0.35);
+  --energy-red: #ff3366;
+  --energy-red-glow: rgba(255, 51, 102, 0.35);
+  --electric-blue: #00e5ff;
+  --electric-blue-glow: rgba(0, 229, 255, 0.3);
+  --ready-gray: #475569;
+  --ready-glow: rgba(148, 163, 184, 0.2);
+
+  /* 텍스트 컬러 */
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dark: #0a0e17;
+
+  /* 애니메이션 트랜지션 */
+  --theme-transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                      border-color 0.5s ease,
+                      box-shadow 0.5s ease;
+}
+
+/* 리셋 & 기본 세팅 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100dvh;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* 앱 메인 래퍼 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 12px 16px 32px;
+  gap: 16px;
+}
+
+/* ==========================================================================
+   1. 헤더 영역
+   ========================================================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 8px var(--electric-blue));
+}
+
+.logo-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--text-main);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-main);
+  border-color: var(--electric-blue);
+}
+
+.icon-btn.active {
+  color: var(--neon-green);
+  border-color: var(--neon-green);
+}
+
+/* ==========================================================================
+   2. 메인 디스플레이 영역 (바닥 거치 가독성 최적화)
+   ========================================================================== */
+.main-display-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 28px;
+  padding: 24px 16px 20px;
+  position: relative;
+  transition: var(--theme-transition);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 상태별 배경 및 테두리 색상 테마 */
+body.theme-idle .main-display-section,
+body.theme-ready .main-display-section {
+  background: radial-gradient(circle at top, #1e293b 0%, var(--bg-secondary) 100%);
+  border-color: #3b82f6;
+  box-shadow: 0 0 28px var(--ready-glow);
+}
+
+body.theme-work .main-display-section {
+  background: radial-gradient(circle at top, #063c22 0%, var(--bg-secondary) 100%);
+  border-color: var(--neon-green);
+  box-shadow: 0 0 36px var(--neon-green-glow);
+}
+
+body.theme-rest .main-display-section {
+  background: radial-gradient(circle at top, #450a18 0%, var(--bg-secondary) 100%);
+  border-color: var(--energy-red);
+  box-shadow: 0 0 36px var(--energy-red-glow);
+}
+
+/* 상태 뱃지 */
+.status-badge-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.status-badge {
+  display: inline-block;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: #334155;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+}
+
+body.theme-work .status-badge {
+  background: var(--neon-green);
+  color: #052212;
+  box-shadow: 0 0 16px var(--neon-green);
+  animation: pulseBadge 1.5s infinite;
+}
+
+body.theme-rest .status-badge {
+  background: var(--energy-red);
+  color: #fff;
+  box-shadow: 0 0 16px var(--energy-red);
+  animation: pulseBadge 1.5s infinite;
+}
+
+body.theme-ready .status-badge {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.wakelock-badge {
+  font-size: 0.75rem;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--electric-blue);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+/* 현재 운동 이름 */
+.current-stage-name {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  color: #ffffff;
+  word-break: keep-all;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+/* 라운드 정보 & 게이지 */
+.round-indicator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 12px;
+}
+
+.round-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.round-numbers {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #27354f;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--electric-blue);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+body.theme-work .progress-bar-fill {
+  background: var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green);
+}
+
+body.theme-rest .progress-bar-fill {
+  background: var(--energy-red);
+  box-shadow: 0 0 10px var(--energy-red);
+}
+
+/* 초대형 타이머 폰트 */
+.timer-display-wrapper {
+  margin: 8px 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-timer {
+  font-family: 'Chakra Petch', monospace;
+  font-size: clamp(5.2rem, 19vw, 9.8rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+body.theme-work .main-timer {
+  color: var(--neon-green);
+  text-shadow: 0 0 25px var(--neon-green-glow);
+}
+
+body.theme-rest .main-timer {
+  color: var(--energy-red);
+  text-shadow: 0 0 25px var(--energy-red-glow);
+}
+
+body.theme-ready .main-timer {
+  color: #60a5fa;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+}
+
+.timer-sub-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* Next 운동 미리보기 카드 */
+.next-preview-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  max-width: 90%;
+}
+
+.next-tag {
+  background: var(--electric-blue);
+  color: #032b38;
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.next-stage-text {
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   3. 컨트롤 패널 (큼직한 터치 버튼)
+   ========================================================================== */
+.control-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr 1fr 1.3fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.ctrl-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 72px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.ctrl-btn:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+.ctrl-btn .icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.ctrl-btn .btn-label {
+  font-size: 0.8rem;
+  letter-spacing: -0.2px;
+}
+
+/* 보조 버튼 스타일 */
+.ctrl-btn-sub {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.ctrl-btn-sub:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--electric-blue);
+}
+
+/* 다음 단계 전용 버튼 강조 */
+.ctrl-btn-next {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  color: var(--electric-blue);
+}
+
+.ctrl-btn-next:hover {
+  background: rgba(0, 229, 255, 0.15);
+  box-shadow: 0 0 16px var(--electric-blue-glow);
+}
+
+/* 메인 시작/일시정지 버튼 (가장 크고 강조됨) */
+.ctrl-btn-main {
+  background: linear-gradient(135deg, #00ff88, #00c96b);
+  color: #042414;
+  box-shadow: 0 6px 20px var(--neon-green-glow);
+}
+
+.ctrl-btn-main .icon {
+  font-size: 1.6rem;
+}
+
+.ctrl-btn-main .btn-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.ctrl-btn-main.is-paused {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+.ctrl-btn-main.is-running {
+  background: linear-gradient(135deg, #ff3366, #e11d48);
+  color: #fff;
+  box-shadow: 0 6px 20px var(--energy-red-glow);
+}
+
+/* ==========================================================================
+   4. 루틴 설정 & 스테이지 빌더 영역
+   ========================================================================== */
+.routine-builder-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.toggle-view-btn {
+  background: none;
+  border: none;
+  color: var(--electric-blue);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.builder-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.3s ease;
+}
+
+.builder-content.collapsed {
+  display: none;
+}
+
+/* 4.1 루틴 프리셋 제어 바 */
+.preset-control-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preset-select-wrapper {
+  flex: 1;
+  min-width: 180px;
+}
+
+.styled-select {
+  width: 100%;
+  height: 44px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-main);
+  padding: 0 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.styled-select:focus {
+  border-color: var(--electric-blue);
+}
+
+.preset-btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.preset-btn {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--electric-blue);
+  border-color: rgba(0, 229, 255, 0.4);
+}
+
+.btn-save:hover {
+  background: var(--electric-blue);
+  color: #032b38;
+}
+
+.btn-del {
+  background: rgba(255, 51, 102, 0.12);
+  color: var(--energy-red);
+  border-color: rgba(255, 51, 102, 0.4);
+}
+
+.btn-del:hover {
+  background: var(--energy-red);
+  color: #fff;
+}
+
+/* 4.2 전역 대기 시간 및 요약 바 */
+.global-setting-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.input-with-unit {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.input-with-unit input {
+  width: 44px;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: 'Chakra Petch', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+}
+
+.input-with-unit .unit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.routine-summary-badge {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.routine-summary-badge span {
+  font-family: 'Chakra Petch', monospace;
+  font-weight: 700;
+  color: var(--electric-blue);
+}
+
+/* 4.3 스테이지 카드 목록 */
+.stage-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stage-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.stage-card.is-active-stage {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 16px var(--neon-green-glow);
+}
+
+.stage-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-badge-num {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  background: rgba(0, 229, 255, 0.15);
+  color: var(--electric-blue);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.stage-card-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-card-action {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.15s ease;
+}
+
+.btn-card-action:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-main);
+}
+
+.btn-card-action.btn-del-card:hover {
+  background: rgba(255, 51, 102, 0.2);
+  color: var(--energy-red);
+  border-color: var(--energy-red);
+}
+
+/* 카드 내부 필드 그리드 */
+.stage-form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.3fr;
+  gap: 8px;
+}
+
+.stage-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stage-input-group label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stage-input-text,
+.stage-select-type {
+  height: 38px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-main);
+  padding: 0 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.stage-input-text:focus,
+.stage-select-type:focus {
+  border-color: var(--electric-blue);
+}
+
+/* 숫자 입력 3열 그리드 (운동시간, 휴식시간, 라운드수) */
+.stage-num-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.num-input-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.num-input-box span.num-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.num-input-box.highlight-work span.num-label {
+  color: var(--neon-green);
+}
+
+.num-input-box.highlight-rest span.num-label {
+  color: var(--energy-red);
+}
+
+.num-input-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: 'Chakra Petch', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+}
+
+/* 4.4 새 스테이지 추가 버튼 */
+.add-stage-wrapper {
+  margin-top: 6px;
+}
+
+.btn-add-stage {
+  width: 100%;
+  height: 48px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1.5px dashed rgba(0, 229, 255, 0.4);
+  border-radius: 14px;
+  color: var(--electric-blue);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-stage:hover {
+  background: rgba(0, 229, 255, 0.16);
+  border-color: var(--electric-blue);
+  box-shadow: 0 0 16px var(--electric-blue-glow);
+}
+
+/* ==========================================================================
+   5. 모달 팝업 오버레이
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: 24px;
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.modal-input {
+  width: 100%;
+  height: 46px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-main);
+  padding: 0 14px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.modal-input:focus {
+  border-color: var(--electric-blue);
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-modal {
+  height: 46px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-modal-cancel {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.btn-modal-confirm {
+  background: var(--electric-blue);
+  color: #032b38;
+}
+
+/* 완료 모달 스타일 */
+.completed-content {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 40px var(--neon-green-glow);
+}
+
+.trophy-icon {
+  font-size: 3.5rem;
+  animation: bounceTrophy 1s infinite alternate ease-in-out;
+}
+
+@keyframes bounceTrophy {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+.completed-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--neon-green);
+  letter-spacing: 1px;
+}
+
+.completed-stats {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.95rem;
+}
+
+.completed-stats strong {
+  display: block;
+  font-family: 'Chakra Petch', monospace;
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   6. 반응형 미디어 쿼리 (스마트폰 & 태블릿 바닥 모드 최적화)
+   ========================================================================== */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 8px 12px 24px;
+    gap: 12px;
+  }
+
+  .main-display-section {
+    padding: 20px 12px 16px;
+    border-radius: 22px;
+  }
+
+  .control-panel {
+    gap: 6px;
+  }
+
+  .ctrl-btn {
+    height: 66px;
+    border-radius: 16px;
+  }
+
+  .ctrl-btn .icon {
+    font-size: 1.25rem;
+  }
+
+  .ctrl-btn .btn-label {
+    font-size: 0.72rem;
+  }
+
+  .stage-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
